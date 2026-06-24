@@ -1,88 +1,6 @@
 import json
-
-class pokemon:
-    def __init__(self, id, nombre, tipo, poder_combate):
-        self.id= id
-        self.nombre= nombre
-        self.tipo= tipo
-        self.poder_combate= poder_combate
-
-    def __repr__(self):
-        return f"{self.id}: {self.nombre}, {self.tipo}, {self.poder_combate}"
-
-#clase de hashmap sacada de w3schools
-class HashMap:
-    def __init__(self, size=10):
-        self.size = size
-        self.buckets = [[] for _ in range(size)] 
-        
-    def hash_function(self, key):
-        key = str(key)
-        numeric_sum = sum(int(char) for char in key if char.isdigit())
-        return numeric_sum % self.size 
-
-    def put(self, key, value):
-        index = self.hash_function(key)
-        bucket = self.buckets[index]
-        for i, (k, v) in enumerate(bucket):
-            if k == key:
-                bucket[i] = (key, value)
-                return
-        bucket.append((key, value))
-    
-    def __repr__(self):
-        resultado = ""
-        for bucket in self.buckets:
-            for id, pokemon in bucket:
-                    resultado += f"{pokemon}\n"
-        return resultado
-    
-    def insertion_sort(self):
-        pokemones = []
-
-
-        for bucket in self.buckets:
-            for clave, poke in bucket:
-                pokemones.append(poke)
-
-        for i in range(1, len(pokemones)):
-            actual = pokemones[i]
-            j = i - 1
-
-            while j >= 0 and pokemones[j].id > actual.id:
-                pokemones[j + 1] = pokemones[j]
-                j -= 1
-
-            pokemones[j + 1] = actual
-
-        for poke in pokemones:
-            print(poke)
-        
-        return pokemones
-
-
-
-
-class Registro_Medallas:
-    def __init__(self, size=10):
-        self.size=size
-        self.buckets = [[] for i in range(size)]
-
-    def hash_function(self, value):
-        return sum(ord(char) for char in value) % self.size
-    
-    def add(self, value):
-        index = self.hash_function(value)
-        bucket = self.buckets[index]
-        if value not in bucket:
-            bucket.append(value)
-    
-    def __repr__(self):
-        resultado = ""
-        for bucket in self.buckets:
-            for medalla in bucket:
-                resultado += f"{medalla}\n"
-        return resultado
+from estructuras import HashSet, HashMap, Nodo, linked_list_simple
+from clases import Pokemon, Entrenador
 
 def cargar_pokedex(nombre_archivo): 
     pokedex = HashMap() 
@@ -94,12 +12,12 @@ def cargar_pokedex(nombre_archivo):
         return None 
     
     for p in datos: 
-        poke = pokemon( p["id"], p["nombre"], p["tipo"], p["poder_combate"] ) 
+        poke = Pokemon( p["id"], p["nombre"], p["tipo"], p["poder_combate"] ) 
         pokedex.put(poke.id, poke) 
     return pokedex 
 
 def cargar_medallas():
-    medallas = Registro_Medallas()
+    medallas = HashSet()
     with open("medallas_jugador.json", "r", encoding="utf-8") as archivo:
         datos = json.load(archivo)
     for m in datos:
@@ -108,14 +26,28 @@ def cargar_medallas():
 
 def main():
     pokedex = cargar_pokedex("pokemones.json")
+    entrenador = Entrenador()
+    pc = linked_list_simple()
 
-    pokemones_ordenados = pokedex.insertion_sort()
+    print(pokedex)
+    print(cargar_medallas())
+    
+    contador = 0
 
-    for pokemon in pokemones_ordenados:
+    for bucket in pokedex.buckets:
+        for clave, poke in bucket:
+            entrenador.agregar_pokemon(poke, pc)
+            contador += 1
+            if contador == 8:
+                break
+        if contador == 8:
+            break
+    print("\nEQUIPO:")
+    for pokemon in entrenador.equipo:
         print(pokemon)
 
-    print()
-    print(cargar_medallas())
+    print("\nPC:")
+    pc.mostrar()
 
 
 if __name__ == "__main__":
