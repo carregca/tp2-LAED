@@ -1,4 +1,5 @@
 import json
+
 class pokemon:
     def __init__(self, id, nombre, tipo, poder_combate):
         self.id= id
@@ -10,17 +11,10 @@ class pokemon:
         return f"{self.id}: {self.nombre}, {self.tipo}, {self.poder_combate}"
 
 #clase de hashmap sacada de w3schools
-class simple_hashmap:
-    def __init__(self, size=100):
+class HashMap:
+    def __init__(self, size=10):
         self.size = size
         self.buckets = [[] for _ in range(size)] 
-    
-    def __repr__(self):
-        resultado = ""
-        for bucket in self.buckets:
-            for id, pokemon in bucket:
-                    resultado += f"{pokemon}\n"
-        return resultado
         
     def hash_function(self, key):
         key = str(key)
@@ -36,24 +30,37 @@ class simple_hashmap:
                 return
         bucket.append((key, value))
     
-    def print_map(self):
-        print("Hash Map Contents:")
-        for index, bucket in enumerate(self.buckets):
-            print(f"Bucket {index}: {bucket}")
-            
-    def mostrar_todos(self):
+    def __repr__(self):
+        resultado = ""
         for bucket in self.buckets:
-            for clave, pokemon in bucket:
-                print(pokemon)
+            for id, pokemon in bucket:
+                    resultado += f"{pokemon}\n"
+        return resultado
+    
+    def insertion_sort(self):
+        pokemones = []
+
+
+        for bucket in self.buckets:
+            for clave, poke in bucket:
+                pokemones.append(poke)
+
+        for i in range(1, len(pokemones)):
+            actual = pokemones[i]
+            j = i - 1
+
+            while j >= 0 and pokemones[j].id > actual.id:
+                pokemones[j + 1] = pokemones[j]
+                j -= 1
+
+            pokemones[j + 1] = actual
+
+        for poke in pokemones:
+            print(poke)
         
-        pokedex = simple_hashmap()
-        
-        with open("pokemones.json", "r", encoding="utf-8") as archivo:
-            datos = json.load(archivo)
-        for p in datos:
-            poke = pokemon(p["id"], p["nombre"], p["tipo"], p["poder_combate"])
-            pokedex.put(poke.id, poke)
-        return pokedex
+        return pokemones
+
+
 
 
 class Registro_Medallas:
@@ -72,12 +79,24 @@ class Registro_Medallas:
     
     def __repr__(self):
         resultado = ""
-
         for bucket in self.buckets:
             for medalla in bucket:
                 resultado += f"{medalla}\n"
-
         return resultado
+
+def cargar_pokedex(nombre_archivo): 
+    pokedex = HashMap() 
+    try:
+        with open(nombre_archivo, "r", encoding="utf-8") as archivo: 
+            datos = json.load(archivo) 
+    except FileNotFoundError: 
+        print("No se encontró el archivo.") 
+        return None 
+    
+    for p in datos: 
+        poke = pokemon( p["id"], p["nombre"], p["tipo"], p["poder_combate"] ) 
+        pokedex.put(poke.id, poke) 
+    return pokedex 
 
 def cargar_medallas():
     medallas = Registro_Medallas()
@@ -87,8 +106,21 @@ def cargar_medallas():
         medallas.add(m)
     return medallas
 
-simple_hashmap.mostrar_todos()
+def main():
+    pokedex = cargar_pokedex("pokemones.json")
 
-print(cargar_medallas())
+    pokemones_ordenados = pokedex.insertion_sort()
+
+    for pokemon in pokemones_ordenados:
+        print(pokemon)
+
+    print()
+    print(cargar_medallas())
+
+
+if __name__ == "__main__":
+    main()
+
+
 
 
