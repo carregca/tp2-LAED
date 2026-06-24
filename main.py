@@ -14,10 +14,18 @@ class simple_hashmap:
     def __init__(self, size=100):
         self.size = size
         self.buckets = [[] for _ in range(size)] 
-
+    
+    def __repr__(self):
+        resultado = ""
+        for bucket in self.buckets:
+            for id, pokemon in bucket:
+                    resultado += f"{pokemon}\n"
+        return resultado
+        
     def hash_function(self, key):
+        key = str(key)
         numeric_sum = sum(int(char) for char in key if char.isdigit())
-        return numeric_sum % 10 
+        return numeric_sum % self.size 
 
     def put(self, key, value):
         index = self.hash_function(key)
@@ -32,20 +40,55 @@ class simple_hashmap:
         print("Hash Map Contents:")
         for index, bucket in enumerate(self.buckets):
             print(f"Bucket {index}: {bucket}")
+            
     def mostrar_todos(self):
         for bucket in self.buckets:
             for clave, pokemon in bucket:
                 print(pokemon)
+        
+        pokedex = simple_hashmap()
+        
+        with open("pokemones.json", "r", encoding="utf-8") as archivo:
+            datos = json.load(archivo)
+        for p in datos:
+            poke = pokemon(p["id"], p["nombre"], p["tipo"], p["poder_combate"])
+            pokedex.put(poke.id, poke)
+        return pokedex
 
-pokedex = simple_hashmap()
 
+class Registro_Medallas:
+    def __init__(self, size=10):
+        self.size=size
+        self.buckets = [[] for i in range(size)]
 
-with open("pokemones.json", "r", encoding="utf-8") as archivo:
-    datos = json.load(archivo)
-for p in datos:
-        poke = pokemon(p["id"], p["nombre"], p["tipo"], p["poder_combate"])
-        pokedex.put(poke.id, poke)
+    def hash_function(self, value):
+        return sum(ord(char) for char in value) % self.size
+    
+    def add(self, value):
+        index = self.hash_function(value)
+        bucket = self.buckets[index]
+        if value not in bucket:
+            bucket.append(value)
+    
+    def __repr__(self):
+        resultado = ""
 
+        for bucket in self.buckets:
+            for medalla in bucket:
+                resultado += f"{medalla}\n"
 
-pokedex.mostrar_todos()
+        return resultado
+
+def cargar_medallas():
+    medallas = Registro_Medallas()
+    with open("medallas_jugador.json", "r", encoding="utf-8") as archivo:
+        datos = json.load(archivo)
+    for m in datos:
+        medallas.add(m)
+    return medallas
+
+simple_hashmap.mostrar_todos()
+
+print(cargar_medallas())
+
 
