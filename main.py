@@ -1,5 +1,5 @@
 import json
-from estructuras import HashSet, HashMap, Nodo, linked_list_simple
+from estructuras import HashSet, HashMap, Nodo, linked_list_simple, centro_pokemon
 from clases import Pokemon, Entrenador
 
 def cargar_pokedex(nombre_archivo): 
@@ -52,6 +52,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 

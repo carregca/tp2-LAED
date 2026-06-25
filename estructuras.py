@@ -68,4 +68,21 @@ class HashMap:
                     resultado += f"{pokemon}\n"
         return resultado
 
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    def enqueue(self, elemento):
+        self.items.append(elemento)
+
+    def dequeue(self):
+        if not self.is_empty():
+            return self.items.pop(0)
+        return None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def size(self):
+        return len(self.items)
 
