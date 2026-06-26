@@ -1,6 +1,6 @@
 import json
-from estructuras import HashSet, HashMap, Nodo, linked_list_simple, centro_pokemon
-from clases import Pokemon, Entrenador
+from estructuras import HashSet, HashMap, Nodo, Linked_list_simple, Queue, Stack
+from clases import Pokemon, Entrenador, Centro_Pokemon, Tranferencia, Gimnasio
 
 def cargar_pokedex(nombre_archivo): 
     pokedex = HashMap() 
@@ -26,8 +26,14 @@ def cargar_medallas():
 
 def main():
     pokedex = cargar_pokedex("pokemones.json")
+    medallas= cargar_medallas()
     entrenador = Entrenador()
-    pc = linked_list_simple()
+    pc = Linked_list_simple()
+    curacion = Queue()
+    centro = Centro_Pokemon(curacion)
+    stack= Stack()
+    transferencia= Tranferencia(stack)
+    gimnasio= Gimnasio()
 
     print(pokedex)
     print(cargar_medallas())
@@ -48,6 +54,29 @@ def main():
 
     print("\nPC:")
     pc.mostrar()
+    print()
+    
+    
+
+    for pokemon in entrenador.equipo:
+        centro.ingresar(pokemon)
+
+    centro.curar()
+    
+    for poke in entrenador.equipo:
+        print()
+        transferencia.transferir(poke)
+    transferencia.deshacer()
+
+    gimnasio.mostrar_gimnasios()
+
+    opcion = int(input("Elegí un gimnasio: "))
+
+    gimnasio.desafiar(opcion, medallas)
+
+    print("\nMedallas obtenidas:")
+    print(medallas)
+
 
 
 if __name__ == "__main__":

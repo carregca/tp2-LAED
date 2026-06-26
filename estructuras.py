@@ -3,7 +3,7 @@ class Nodo:
         self.pokemon = pokemon
         self.next = None
 
-class linked_list_simple:
+class Linked_list_simple:
     def __init__(self):
         self.head = None
     def agregar(self, pokemon):
@@ -20,6 +20,15 @@ class linked_list_simple:
         while actual:
             print(actual.pokemon)
             actual = actual.next
+    def convertir_lista(self):
+        lista = []
+        actual = self.head
+
+        while actual:
+            lista.append(actual.pokemon)
+            actual = actual.next
+
+        return lista
 
 
 class HashSet:
@@ -85,4 +94,26 @@ class Queue:
 
     def size(self):
         return len(self.items)
+    
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, elemento):
+        self.items.append(elemento)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+        return None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def size(self):
+        return len(self.items)
+    
+
+    
+
 
