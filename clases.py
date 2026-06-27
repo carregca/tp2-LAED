@@ -31,7 +31,13 @@ class Entrenador:
         else:
             print("equipo lleno, enviando a la pc")
             pc.agregar(pokemon)
-
+    
+    def buscar_pokemon(self, nombre):
+        for pokemon in self.equipo:
+            if pokemon.nombre.lower() == nombre.lower():
+                return pokemon
+            return None
+        
 class Centro_Pokemon():
 
     def __init__(self, cola):

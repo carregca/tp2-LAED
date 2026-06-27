@@ -1,3 +1,5 @@
+#Estructuras sacadas y modificadas de W3schools
+
 class Nodo:
     def __init__(self, pokemon):
         self.pokemon = pokemon
@@ -29,7 +31,56 @@ class Linked_list_simple:
             actual = actual.next
 
         return lista
+    
+    #Sorts sacados de w3schools y modificados con mis nombres de variable
 
+    def bubble_sort_nombre(self):
+        pokemones= self.convertir_lista()   
+        n = len(pokemones)
+        for i in range(n-1):
+            skew = False 
+            for j in range(n-i-1):
+                if pokemones[j].nombre > pokemones[j+1].nombre:
+                    pokemones[j], pokemones[j+1] = pokemones[j+1], pokemones[j]
+                    skew = True
+            if not skew:
+                break
+        return pokemones
+    
+    def selection_sort_tipo(self):
+        pokemones= self.convertir_lista()
+        n = len(pokemones)
+        for i in range(n):
+            min_index = i
+            for j in range(i+1, n):
+                if pokemones[j].tipo < pokemones[min_index].tipo:
+                    min_index = j   
+            pokemones[i], pokemones[min_index] = pokemones[min_index], pokemones[i]
+
+        return pokemones 
+    
+    def quick_sort_pc(self, lista):
+
+        if len(lista) <= 1:
+            return lista
+
+        pivote = lista[0]
+
+        mayores = []
+        menores = []
+
+        for pokemon in lista[1:]:
+
+            if pokemon.poder_combate > pivote.poder_combate:
+                mayores.append(pokemon)
+            else:
+                menores.append(pokemon)
+
+        return self.quick_sort_pc(mayores) + [pivote] + self.quick_sort_pc(menores)
+    
+    def ordenar_poder(self):
+        return self.quick_sort_pc(self.convertir_lista())
+     
 
 class HashSet:
     def __init__(self, size=10):

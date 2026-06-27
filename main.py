@@ -1,6 +1,7 @@
 import json
 from estructuras import HashSet, HashMap, Nodo, Linked_list_simple, Queue, Stack
 from clases import Pokemon, Entrenador, Centro_Pokemon, Tranferencia, Gimnasio
+from menus import submenu_sorts
 
 def cargar_pokedex(nombre_archivo): 
     pokedex = HashMap() 
@@ -76,6 +77,17 @@ def main():
 
     print("\nMedallas obtenidas:")
     print(medallas)
+
+    submenu_sorts(pc)
+    nombre = input("Ingrese el nombre del pokemon: ")
+
+    resultado = entrenador.buscar_pokemon(nombre)
+
+    if resultado:
+        print("Pokemon encontrado:")
+        print(resultado)
+    else:
+        print("Ese pokemon no esta en el equipo.")
 
 
 
