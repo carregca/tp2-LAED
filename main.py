@@ -89,6 +89,8 @@ def main():
     else:
         print("Ese pokemon no esta en el equipo.")
 
+    entrenador.atrapar_pokemon(pokedex, pc)
+
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-from estructuras import Queue, Stack
+from estructuras import Queue, Stack, HashMap, HashSet
 import random
 
 class Pokemon:
@@ -23,6 +23,35 @@ class Entrenador:
             resultado += f"{pokemon}\n"
 
         return resultado
+    
+    def atrapar_pokemon(self, pokedex, pc):
+        pokemones= []
+        for bucket in pokedex.buckets:
+            for _, pokemon in bucket:
+                pokemones.append(pokemon)
+        
+        salvaje = random.choice(pokemones)
+
+        print("un pokemon salvaje aparecio!")
+        print(f"nombre: {salvaje.nombre}")
+        print(f"tipo: {salvaje.tipo}")
+        print(f"poder de combate: {salvaje.poder_combate}")
+
+        opcion = input("lanzar una Pokeball? (s/n): ").lower()
+
+        if opcion == "s":
+
+            intento = random.randint(1, 100)
+
+            if intento <= 70:
+                print("atrapaste al pokemon")
+                self.agregar_pokemon(salvaje, pc)
+            else:
+                print("la Pokeball fallo, el Pokemon escapo")
+        
+        else:
+            print("escapaste del combate")
+            return
 
     def agregar_pokemon(self, pokemon, pc):
         if len(self.equipo)< 6:
