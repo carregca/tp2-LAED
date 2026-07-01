@@ -32,6 +32,34 @@ class Linked_list_simple:
 
         return lista
     
+    def buscar(self, nombre):  
+        actual = self.head 
+        while actual:
+            if actual.pokemon.nombre.lower() == nombre.lower():  
+                return actual.pokemon 
+            actual = actual.next  
+        return None  
+
+    def eliminar(self, nombre):  
+        actual = self.head 
+        anterior = None 
+
+        while actual:  
+            if actual.pokemon.nombre.lower() == nombre.lower():  
+
+                if anterior is None: 
+                    self.head = actual.next  
+                else:  
+                    anterior.next = actual.next 
+
+                return actual.pokemon  
+
+            anterior = actual  
+            actual = actual.next  
+
+        return None 
+
+    
     #Sorts sacados de w3schools y modificados con mis nombres de variable
 
     def bubble_sort_nombre(self):
@@ -80,6 +108,8 @@ class Linked_list_simple:
     
     def ordenar_poder(self):
         return self.quick_sort_pc(self.convertir_lista())
+    
+    
      
 
 class HashSet:
@@ -120,6 +150,18 @@ class HashMap:
                 bucket[i] = (key, value)
                 return
         bucket.append((key, value))
+
+    def get(self, key):
+        index = self.hash_function(key)
+        bucket = self.buckets[index]
+
+        for ke, pokemon in bucket:
+            if ke == key:
+                return pokemon
+        
+        return None
+        
+
     
     def __repr__(self):
         resultado = ""
@@ -128,6 +170,30 @@ class HashMap:
                     resultado += f"{pokemon}\n"
         return resultado
 
+    def busqueda_binaria(self, id_buscado):
+        ids= []
+
+        for bucket in self.buckets:
+            if bucket:
+                ids.append(bucket[0][0])
+        
+        izquierda = 0
+        derecha = len(ids) - 1
+
+        while izquierda <= derecha:
+
+            medio = (izquierda + derecha) // 2
+
+            if ids[medio] == id_buscado:
+                return self.get(id_buscado)
+
+            elif ids[medio] < id_buscado:
+                izquierda = medio + 1
+
+            else:
+                derecha = medio - 1
+
+        return None
 class Queue:
     def __init__(self):
         self.items = []

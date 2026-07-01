@@ -56,7 +56,7 @@ class Entrenador:
     def agregar_pokemon(self, pokemon, pc):
         if len(self.equipo)< 6:
             self.equipo.append(pokemon)
-            print(f"{pokemon.nombre}agregado a su equipo")
+            print(f"{pokemon.nombre} agregado a su equipo")
         else:
             print("equipo lleno, enviando a la pc")
             pc.agregar(pokemon)
@@ -65,7 +65,16 @@ class Entrenador:
         for pokemon in self.equipo:
             if pokemon.nombre.lower() == nombre.lower():
                 return pokemon
-            return None
+        return None
+        
+    def mostrar_equipo(self):
+        if len(self.equipo) == 0:
+            print("El equipo está vacío.")
+            return
+
+        print("== Equipo Principal ===")
+        for pokemon in self.equipo:
+            print(pokemon)
         
 class Centro_Pokemon():
 
@@ -76,31 +85,41 @@ class Centro_Pokemon():
         self.cola.enqueue(pokemon)
     
     def curar(self):
+        if self.cola.is_empty():
+            print("no hay pokemones esperando")
+            return
+        
         while not self.cola.is_empty():
             pokemon = self.cola.dequeue()
             print(f"Curando a tu {pokemon.nombre}")
+        print("todos los pokemones han sido curados")
 
 class Tranferencia:
     def __init__(self, stack):
         self.stack = stack
     
-    def transferir(self, pokemon):
+    def transferir(self, pc, nombre):
+        pokemon = pc.eliminar(nombre)
+        if pokemon is None:
+            print("pokemon no encontrado en la PC")
+            return
         self.stack.push(pokemon)
 
-        if self.stack.size() > 5:
-            self.stack.items.pop(0)
+        if self.stack.size() > 5: 
+            self.stack.items.pop(0)  
 
         print(f"{pokemon.nombre} se transfirio correctamente")
     
-    def deshacer(self):
+    def deshacer(self, pc):
         pokemon= self.stack.pop()
 
         if pokemon:
+            pc.agregar(pokemon)
             print(f"{pokemon.nombre} regreso correctamente")
             return pokemon
-        
-        print("no hay transferencias para cancelar")
-        return None
+        else:
+            print("no hay transferencias para cancelar")
+
     
 class Gimnasio:
     def __init__(self):
