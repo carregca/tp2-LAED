@@ -87,17 +87,20 @@ class Linked_list_simple:
 
         return pokemones 
     
-    def quick_sort_pc(self, lista):
+    def quick_sort_pc(self, pokemones=None):
 
-        if len(lista) <= 1:
-            return lista
+        if pokemones is None:
+            pokemones = self.convertir_lista()
 
-        pivote = lista[0]
+        if len(pokemones) <= 1:
+            return pokemones
+
+        pivote = pokemones[0]
 
         mayores = []
         menores = []
 
-        for pokemon in lista[1:]:
+        for pokemon in pokemones[1:]:
 
             if pokemon.poder_combate > pivote.poder_combate:
                 mayores.append(pokemon)
@@ -105,10 +108,6 @@ class Linked_list_simple:
                 menores.append(pokemon)
 
         return self.quick_sort_pc(mayores) + [pivote] + self.quick_sort_pc(menores)
-    
-    def ordenar_poder(self):
-        return self.quick_sort_pc(self.convertir_lista())
-    
     
      
 
@@ -229,8 +228,3 @@ class Stack:
 
     def size(self):
         return len(self.items)
-    
-
-    
-
-

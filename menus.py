@@ -3,8 +3,8 @@ from estructuras import Linked_list_simple, Queue, Stack, HashMap, HashSet
 import json, os, time
 
 def borrar():
-    input("precione cualquier tecla para continuar: ")
-    os.system("cls")
+    input("Presione cualquier tecla para continuar: ")
+
     
 
 def cargar_pokedex(nombre_archivo): 
@@ -13,7 +13,7 @@ def cargar_pokedex(nombre_archivo):
         with open(nombre_archivo, "r", encoding="utf-8") as archivo: 
             datos = json.load(archivo) 
     except FileNotFoundError: 
-        print("No se encontró el archivo.") 
+        print("No se encontró el archivo") 
         return None 
     
     for p in datos: 
@@ -54,10 +54,12 @@ def menu_princi():
         print("7. Buscar Pokemon en Equipo")
         print("8. Enviar Pokemon al Centro Pokemon")
         print("9. Transferir Pokemon al Profesor Oak")
-        print("10. Deshacer ultima transferencia")
+        print("10. Deshacer última transferencia")
         print("11. Desafiar Lider de Gimnasio")
-        print("12. Buscar pokemon por id")
-        print("13. salir")
+        print("12. Buscar Pokemon por id")
+        print("13. Enviar Pokemon del Equipo a la PC")
+        print("14. Pasar Pokemon de la PC al Equipo")
+        print("15. Salir")
 
         opcion = input("\nOpción: ")
 
@@ -73,8 +75,11 @@ def menu_princi():
 
         elif opcion == "3":
             os.system("cls")
-            pc.mostrar()
-            borrar()
+            if pc.head is None:
+                print("No hay pokemones en la pc")
+            else:
+                pc.mostrar()
+                borrar()
 
         elif opcion == "4":
             os.system("cls")
@@ -88,38 +93,56 @@ def menu_princi():
 
         elif opcion == "6":
             os.system("cls")
-            submenu_sorts(pc)
-            borrar()
+            if pc.head is None:
+                print("No hay pokemones en la pc")
+                borrar()
+            else:
+                submenu_sorts(pc)
+                borrar()
 
         elif opcion == "7":
             os.system("cls")
-            nombre = input("Nombre del Pokémon: ")
-            pokemon = entrenador.buscar_pokemon(nombre)
-            if pokemon:
-                print(pokemon)
+            if len(entrenador.equipo) >= 1:
+                nombre = input("Nombre del Pokemon: ")
+                pokemon = entrenador.buscar_pokemon(nombre)
+                if pokemon:
+                    print(pokemon)
+                else:
+                    print("Ese Pokemon no está en el equipo.")
+                borrar()
             else:
-                print("Ese Pokémon no está en el equipo.")
-            borrar()
+                print("No hay pokemones en el equipo")
+                borrar()
 
         elif opcion == "8":
             os.system("cls")
-            nombre = input("Nombre del Pokémon a curar: ")
-            pokemon = entrenador.buscar_pokemon(nombre)
+            if len(entrenador.equipo) >= 1:
 
-            if pokemon:
-                centro.ingresar(pokemon)
-                print(f"{pokemon.nombre} ingreso al Centro Pokemon.")  
-                opcion2 = input("Curarlo ahora? (s/n): ").lower()  
-                if opcion2 == "s":  
-                    centro.curar()  
+                nombre = input("Nombre del Pokemon a curar: ")
+                pokemon = entrenador.buscar_pokemon(nombre)
+
+                if pokemon:
+                    centro.ingresar(pokemon)
+                    print(f"{pokemon.nombre} ingresó al Centro Pokemon")  
+                    opcion2 = input("¿Curarlo ahora? (s/n): ").lower()  
+                    if opcion2 == "s":  
+                        centro.curar()  
+                else:
+                    print("Ese Pokemon no está en el equipo.")
+                borrar()
             else:
-                print("Ese Pokémon no está en el equipo.")
-            borrar()
+                print("No hay pokemones en tu equipo")
+                borrar()
+
         elif opcion == "9":
             os.system("cls")
-            nombre = input("Nombre del Pokémon a transferir: ")
-            transferencia.transferir(pc, nombre)
-            borrar()
+            if pc.head is None:
+                print("No hay pokemones en la pc")
+                borrar()
+            else:
+                nombre = input("Nombre del Pokemon a transferir: ")
+                transferencia.transferir(pc, nombre)
+                borrar()
 
         elif opcion == "10":
             os.system("cls")
@@ -128,13 +151,17 @@ def menu_princi():
 
         elif opcion == "11":
             os.system("cls")
-            gimnasio.mostrar_gimnasios()
-            try:
-                opcion_gimnasio = int(input("Elegi un gimnasio: "))  
-                gimnasio.desafiar(opcion_gimnasio, medallas)  
-            except ValueError: 
-                print("Debe ingresar un numero.") 
-            borrar()
+            if len(entrenador.equipo) < 1:
+                print("No puedes desafiar un gimnasio sin pokemones en tu equipo")
+                borrar()
+            else:
+                gimnasio.mostrar_gimnasios()
+                try:
+                    opcion_gimnasio = int(input("Elegí un gimnasio: "))  
+                    gimnasio.desafiar(opcion_gimnasio, medallas)  
+                except ValueError: 
+                    print("Debe ingresar un número") 
+                borrar()
 
         elif opcion == "12":
             os.system("cls")
@@ -145,20 +172,39 @@ def menu_princi():
                     print("Pokemon encontrado:")
                     print(pokemon)  
                 else:  
-                    print("Ese ID no existe.")
+                    print("Ese ID no existe")
 
             except ValueError:
-                print("Debe ingresar un numero.") 
+                print("Debe ingresar un número") 
             borrar() 
             
-        elif opcion == "13": 
-
-            print("Hasta luego.")
+        elif opcion == "13":
+            os.system("cls")
+            if len(entrenador.equipo) < 1:
+                print("No hay pokemones en el equipo")
+                borrar()
+            else:
+                nombre = input("Nombre del Pokemon: ")
+                entrenador.enviar_a_pc(nombre, pc)
+                borrar()
+        
+        elif opcion == "14":
+            os.system("cls")
+            if pc.head is None:
+                print("No hay pokemones en la pc")
+                borrar()
+            else:
+                os.system("cls")
+                entrenador.sacar_de_pc(pc)
+                borrar()
+        
+        elif opcion == "15":
+            print("Hasta Luego")
             break
 
         else:
 
-            print("Opcion invalida.")
+            print("Opción inválida")
             borrar()
     
 
@@ -168,19 +214,19 @@ def submenu_sorts(pc):
     print("2. Ordenar por tipo")
     print("3. Ordenar por poder de combate")
     
-    opcion = int(input("Opción: "))
+    opcion = input("Opción: ")
     
-    if opcion == 1:
+    if opcion == "1":
         lista = pc.bubble_sort_nombre()
 
-    elif opcion == 2:
+    elif opcion == "2":
         lista = pc.selection_sort_tipo()
 
-    elif opcion == 3:
-        lista = pc.ordenar_poder()
+    elif opcion == "3":
+        lista = pc.quick_sort_pc()
     
     else:
-        print("opcion invalida")
+        print("Opción inválida")
         return
 
     for pokemon in lista:

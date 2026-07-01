@@ -1,0 +1,23 @@
+1):
+Agregar un pokemon al final del equipo principal tiene una complejidad O(1) porque el equipo esta hecho 
+con una lista de Python y agregar un elemento al final se hace directamente sin tener que recorrer los 
+demas elementos, en cambio agregar un pokemon al inicio de la PC usando una lista enlazada tambien tiene 
+una complejidad O(1) porque solamente se crea un nuevo nodo y se cambia el puntero que marca el comienzo 
+de la lista, no hace falta recorrer toda la estructura para insertarlo
+
+2):
+La pokedex se implemento usando un Hash Map porque permite buscar un pokemon por su id mucho mas rapido 
+que una lista comun de Python, cuando se quiere buscar un pokemon primero se calcula su posicion usando 
+una funcion hash y despues se accede directamente a ese lugar, por lo que la busqueda tiene una 
+complejidad promedio de O(1), si se hubiera usado una lista de Python habria que recorrer los pokemones 
+uno por uno hasta encontrar el correcto y eso tiene una complejidad O(n), mientras mas pokemones haya 
+guardados mas tiempo tardaria la busqueda
+
+3):
+Si la PC tuviera 6000 pokemones Bubble Sort seria mucho mas lento que Quick Sort, Bubble Sort compara los 
+elementos una y otra vez hasta que todos quedan ordenados y en promedio tiene una complejidad O(n²), por 
+lo que con una cantidad tan grande de pokemones tendria que hacer muchisimas comparaciones, Quick Sort 
+divide la lista en partes mas chicas usando un pivote y despues ordena cada una de esas partes, 
+en promedio tiene una complejidad O(n log n), por eso suele ser mucho mas rapido cuando hay muchos 
+elementos para ordenar, el peor caso de Bubble Sort es O(n²) y el peor caso de Quick Sort tambien es O(n²), 
+que ocurre cuando la lista ya esta ordenada y se intenta aplicar un Quick Sort
